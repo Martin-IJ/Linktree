@@ -3,9 +3,10 @@ import React, { InputHTMLAttributes } from "react";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   icon?: React.ReactNode;
+  error?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, icon, ...props }) => {
+const Input: React.FC<InputProps> = ({ label, icon, error, ...props }) => {
   return (
     <div>
       <label htmlFor={props.id} className="block mb-2 text-sm">
@@ -14,6 +15,9 @@ const Input: React.FC<InputProps> = ({ label, icon, ...props }) => {
       <div className="flex items-center gap-3 bg-gray-50 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2.5">
         {icon}
         <input {...props} className="w-full outline-none bg-transparent" />
+        {error && (
+          <span className="absolute text-red-500 text-xs right-2">{error}</span>
+        )}
       </div>
     </div>
   );

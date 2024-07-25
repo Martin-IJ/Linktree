@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const CustomLinks = () => {
   return (
-    <div className="w-full h-full flex flex-col bg-secondary roundedLg p-10">
+    <div className="w-full h-full flex flex-col bg-secondary roundedLg p-5 md:p-10">
       <div>
         <h1>Customize your links</h1>
         <p className="mb-10 mt-2">
@@ -32,7 +32,7 @@ const CustomLinks = () => {
         </div>
       </div>
       <div className=" flex justify-end">
-        <Button className="px-10">Save</Button>
+        <Button className="px-10 w-full md:w-auto">Save</Button>
       </div>
     </div>
   );

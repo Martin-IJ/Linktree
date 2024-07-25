@@ -14,12 +14,24 @@ import Input from "../components/FormInput/Input";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const router = useRouter();
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    setError("");
+    setEmailError("");
+    setPasswordError("");
+
+    if (!email) {
+      setEmailError("Can't be empty");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Please check again");
+      return;
+    }
 
     try {
       const credential = await signInWithEmailAndPassword(
@@ -37,7 +49,14 @@ export default function Login() {
 
       router.push("/");
     } catch (e) {
-      setError((e as Error).message);
+      const errorMessage = (e as Error).message;
+      if (errorMessage.includes("email")) {
+        setEmailError("Can't be empty");
+      } else if (errorMessage.includes("password")) {
+        setPasswordError("Please check again");
+      } else {
+        setEmailError(errorMessage);
+      }
     }
   }
 
@@ -66,6 +85,7 @@ export default function Login() {
               id="email"
               placeholder="e.g. alex@email.com"
               icon={<PiEnvelopeSimpleFill className="text-lg" />}
+              error={emailError}
               required
             />
             <Input
@@ -77,17 +97,10 @@ export default function Login() {
               id="password"
               placeholder="Enter your password"
               icon={<IoIosLock className="text-lg" />}
+              error={passwordError}
               required
             />
 
-            {error && (
-              <div
-                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                role="alert"
-              >
-                <span className="block sm:inline">{error}</span>
-              </div>
-            )}
             <Button type="submit" variant="primary" className="w-full">
               Login
             </Button>

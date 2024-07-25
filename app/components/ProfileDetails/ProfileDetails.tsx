@@ -44,7 +44,7 @@ const ProfileDetails = () => {
         />
       </div>
       <div className="flex justify-end">
-        <Button className="px-10">Save</Button>
+        <Button className="px-10 w-full md:w-auto">Save</Button>
       </div>
     </div>
   );

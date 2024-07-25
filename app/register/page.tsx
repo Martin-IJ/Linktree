@@ -1,3 +1,4 @@
+// pages/register.js
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -15,16 +16,30 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmationError, setConfirmationError] = useState("");
   const router = useRouter();
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    setError("");
+    setEmailError("");
+    setPasswordError("");
+    setConfirmationError("");
+
+    if (!email) {
+      setEmailError("Can't be empty");
+      return;
+    }
 
     if (password !== confirmation) {
-      setError("Passwords don't match");
+      setConfirmationError("Passwords don't match");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Please check again");
       return;
     }
 
@@ -32,7 +47,14 @@ export default function Register() {
       await createUserWithEmailAndPassword(getAuth(app), email, password);
       router.push("/login");
     } catch (e) {
-      setError((e as Error).message);
+      const errorMessage = (e as Error).message;
+      if (errorMessage.includes("email")) {
+        setEmailError("Can't be empty");
+      } else if (errorMessage.includes("password")) {
+        setPasswordError("Please check again");
+      } else {
+        setEmailError(errorMessage);
+      }
     }
   }
 
@@ -63,6 +85,7 @@ export default function Register() {
               id="email"
               placeholder="e.g. alex@email.com"
               icon={<PiEnvelopeSimpleFill className="text-lg" />}
+              error={emailError}
               required
             />
             <Input
@@ -74,6 +97,7 @@ export default function Register() {
               id="password"
               placeholder="At least 8 characters"
               icon={<IoIosLock className="text-lg" />}
+              error={passwordError}
               required
             />
             <Input
@@ -85,17 +109,10 @@ export default function Register() {
               id="confirm-password"
               placeholder="At least 8 characters"
               icon={<IoIosLock className="text-lg" />}
+              error={confirmationError}
               required
             />
             <p className="p">Password must contain at least 8 characters</p>
-            {error && (
-              <div
-                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                role="alert"
-              >
-                <span className="block sm:inline">{error}</span>
-              </div>
-            )}
             <Button type="submit" variant="primary" className="w-full">
               Create new account
             </Button>

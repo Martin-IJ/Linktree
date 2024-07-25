@@ -1,8 +1,10 @@
 import React from "react";
 import { CgProfile } from "react-icons/cg";
 import { LuLink } from "react-icons/lu";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import Logo from "../Logo/Logo";
 import Button from "../Button/Button";
+import Image from "next/image";
 
 interface NavbarProps {
   activeTab: string;
@@ -12,7 +14,17 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   return (
     <div className="container flex justify-between items-center py-5 bg-secondary bgRadius">
-      <Logo />
+      <div>
+        <div className="hidden md:flex">
+        <Logo /></div>
+        <Image
+          width={30}
+          height={30}
+          alt="Mobile Logo"
+          src="images/mobile-logo.svg"
+          className="md:hidden"
+        />
+      </div>
       <div className="flex items-center gap-3">
         <button
           onClick={() => setActiveTab("links")}
@@ -23,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           }`}
         >
           <LuLink />
-          Links
+          <span className="hidden md:flex">Links</span>
         </button>
         <button
           onClick={() => setActiveTab("profile")}
@@ -34,11 +46,12 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
           }`}
         >
           <CgProfile />
-          Profile Details
+          <span className="hidden md:flex">Profile Details</span>
         </button>
       </div>
       <Button variant="secondary" className="w-auto">
-        Preview
+        <span className="hidden md:flex">Preview</span>{" "}
+        <MdOutlineRemoveRedEye className="md:hidden text-default text-lg" />
       </Button>
     </div>
   );
