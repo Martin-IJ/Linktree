@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
+import { AuthProvider } from "./context/AuthContext";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({ subsets: ["latin"] });
@@ -16,11 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${instrumentSans.className} bg-secondary-light text-primary-light`}
-      >
-        {children}
-      </body>
+      <AuthProvider>
+        <body
+          className={`${instrumentSans.className} bg-secondary-light text-primary-light`}
+        >
+          {children}
+        </body>
+      </AuthProvider>
     </html>
   );
 }

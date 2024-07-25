@@ -1,5 +1,5 @@
 import { db } from './clientApp';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 
 export const addLink = async (userId, link) => {
   try {
@@ -12,4 +12,14 @@ export const addLink = async (userId, link) => {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+};
+
+export const getLinks = async (userId) => {
+  const links = [];
+  const q = query(collection(db, "links"), where("userId", "==", userId));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    links.push({ id: doc.id, ...doc.data() });
+  });
+  return links;
 };
