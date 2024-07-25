@@ -1,11 +1,21 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, ChangeEvent } from "react";
 import Button from "../Button/Button";
 import Image from "next/image";
 import { addLink as addLinkToFirestore } from "../../lib/firebase/firestoreUtils";
 import { useAuth } from "../../context/AuthContext";
 
-const CustomLinks = ({ links, addLink }) => {
+interface Link {
+  url: string;
+}
+
+interface CustomLinksProps {
+  links: Link[];
+  addLink: (link: Link) => void;
+}
+
+const CustomLinks: React.FC<CustomLinksProps> = ({ links, addLink }) => {
   const [showInput, setShowInput] = useState(false);
   const [linkInput, setLinkInput] = useState("");
   const { user } = useAuth();
@@ -14,7 +24,7 @@ const CustomLinks = ({ links, addLink }) => {
     setShowInput(true);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLinkInput(e.target.value);
   };
 
